@@ -1,2 +1,11 @@
 # FlowLauncher.Google.Translator
-Google tranlate plugin for FlowLauncher
+
+This plugin let you make translations using [Google Translate](https://mobaxterm.mobatek.net/) and copy it from [Flow Launcher](https://www.flowlauncher.com/).
+
+#How to use it
+1. Install this plugin via `pm install Google Translate`
+2. Some use examples:  `tr es:en es mi traducción` Specify from:to lenguages. 
+                       `tr es mi traducción` Autodetection enabled and default translation to English. 
+                       `tr :es my translation` Autodetection enabled and specify translation to Spanish. 
+                       
+This plugin is a modified port of [Wox.Plugin.GoogleTranslate](https://github.com/laercioskt/Wox.Plugin.GoogleTranslate) created by [laercioskt](https://github.com/laercioskt).
