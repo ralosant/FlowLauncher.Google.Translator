@@ -1,6 +1,6 @@
 # FlowLauncher.Google.Translator
 
-This plugin let you make translations using [Google Translate](https://mobaxterm.mobatek.net/) and copy it from [Flow Launcher](https://www.flowlauncher.com/).
+This plugin let you make translations using [Google Translate](https://translate.google.com/) and copy it from [Flow Launcher](https://www.flowlauncher.com/).
 
 #How to use it
 1. Install this plugin via `pm install Google Translate`
