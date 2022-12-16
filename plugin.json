@@ -7,6 +7,6 @@
     "Version":"1.0.0",
     "Language":"python",
     "Website":"https://github.com/ralosant/FlowLauncher.Google.Translator",
-    "IcoPath":"Images\\gt.png",
+    "IcoPath":"images\\gt.png",
     "ExecuteFileName":"main.py"
 }
