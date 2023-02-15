@@ -37,6 +37,11 @@ def copy2clip(txt):
     cmd = 'echo '+txt.strip()+'|clip'
     return subprocess.check_call(cmd, shell=True)
 
+def adapt_zh(language):
+    return {
+        "cn": "zh-CN",
+        "tw": "zh-TW",
+    }.get(language, language)
 
 class GoogTranslate(FlowLauncher):
 
@@ -62,6 +67,9 @@ class GoogTranslate(FlowLauncher):
                 else:
                     from_language = 'auto'
                     to_language = 'en'
+
+                from_language = adapt_zh(from_language)
+                to_language = adapt_zh(to_language)
 
                 translation = translate(
                     query, to_language, from_language, "200")
