@@ -66,7 +66,10 @@ class GoogTranslate(FlowLauncher):
                     query = query[5:]
                 else:
                     from_language = 'auto'
-                    to_language = 'en'
+                    if query.encode().isalpha():
+                        to_language = 'cn'
+                    else:
+                        to_language = 'en'
 
                 from_language = adapt_zh(from_language)
                 to_language = adapt_zh(to_language)
