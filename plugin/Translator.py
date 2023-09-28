@@ -52,7 +52,7 @@ class GoogTranslate(FlowLauncher):
                     "IcoPath": "Images/gt.png", "ContextData": "ctxData"})
             else:
                 from_language = "auto"
-                to_language = "em"
+                to_language = "en"
                 parts = query.split(" ", 1)
 
                 if len(parts) > 1:
