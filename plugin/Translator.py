@@ -51,27 +51,40 @@ class GoogTranslate(FlowLauncher):
                     "SubTitle": "use: 'tr :es your expresion' to translate from auto-detected to Spanish",
                     "IcoPath": "Images/gt.png", "ContextData": "ctxData"})
             else:
-                if len(query) > 3 and ":" in query[0]:
-                    from_language = "auto"
-                    to_language = query[1:3]
-                    query = query[3:]
-                elif len(query) > 5 and ":" in query[2]:
-                    from_language = query[:2]
-                    to_language = query[3:5]
-                    query = query[5:]
+                from_language = "auto"
+                to_language = "em"
+                parts = query.split(" ", 1)
+
+                if len(parts) > 1:
+                    languages, query = parts
+                    lang_parts = languages.split(":")
+
+                    if len(lang_parts) > 1:
+                        from_language, to_language_candidate = lang_parts
+                        if from_language:
+                            from_language = from_language.strip()
+                        if to_language_candidate:
+                            to_language = to_language_candidate.strip()
+                    elif len(lang_parts) == 1:
+                        to_language = lang_parts[0].strip()
                 else:
-                    from_language = 'auto'
-                    to_language = 'en'
+                    query = query.strip()
 
-                translation = translate(
-                    query, to_language, from_language, "200")
+                if len(query.strip()) == 0:
+                    results.append({
+                        "Title": ":es text to translate",
+                        "SubTitle": "use: 'tr :es your expresion' to translate from auto-detected to Spanish",
+                        "IcoPath": "Images/gt.png", "ContextData": "ctxData"})
+                else:
+                    translation = translate(
+                        query.strip(), to_language, from_language, "200")
 
-                results.append({
-                    "Title": to_language + ": " + translation,
-                    "SubTitle": from_language + ": " + query,
-                    "IcoPath": "Images/gt.png",
-                    "ContextData": "ctxData",
-                    "JsonRPCAction": {"method": "copy", "parameters": [translation], }})
+                    results.append({
+                        "Title": to_language + ": " + translation,
+                        "SubTitle": from_language + ": " + query,
+                        "IcoPath": "Images/gt.png",
+                        "ContextData": "ctxData",
+                        "JsonRPCAction": {"method": "copy", "parameters": [translation], }})
         except:
             # Offline or input error
             results.append({
