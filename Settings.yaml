@@ -1,0 +1,7 @@
+Settings:
+  - type: input
+    attributes:
+      name: to_lang
+      label: "Default translation language:"
+      defaultValue: "en"
+      description: Lenguage to display translations
