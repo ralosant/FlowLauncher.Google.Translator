@@ -4,7 +4,7 @@
     "Name":"Google Translate",
     "Description":"Simple Plugin to use Google Translate in FlowLauncher",
     "Author":"Raúl Losantos",
-    "Version":"1.1.0",
+    "Version":"1.1.1",
     "Language":"python",
     "Website":"https://github.com/ralosant/FlowLauncher.Google.Translator",
     "IcoPath":"images\\gt.png",
