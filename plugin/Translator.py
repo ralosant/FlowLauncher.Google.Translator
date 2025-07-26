@@ -33,9 +33,26 @@ def translate(to_translate, to_language="auto", from_language="auto", wrap_len="
 
 
 def copy2clip(txt):
-    """Put translation into clipboard."""
-    cmd = 'echo '+txt.strip()+'|clip'
-    return subprocess.check_call(cmd, shell=True)
+    
+    txt = txt.strip()
+
+    if not txt:
+        return 1
+   
+    # powerShell with set-clipboard (Unicode-safe)
+    try:
+        powershell_command = f'Set-Clipboard -Value @\'\n{txt}\n\'@'
+        subprocess.run(
+            ["powershell", "-NoProfile", "-Command", powershell_command],
+            check=True,
+            encoding="utf-8",
+            creationflags=subprocess.CREATE_NO_WINDOW 
+
+        )
+        return 0
+    except Exception as e:
+        print(f"[Clipboard Error] PowerShell fallback failed: {e}")
+        return 1
 
 
 class GoogTranslate(FlowLauncher):
