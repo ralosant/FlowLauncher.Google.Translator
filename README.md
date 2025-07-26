@@ -8,5 +8,10 @@ This plugin let you make translations using [Google Translate](https://translate
   `tr es:en es mi traducción` Specify from:to languages.  
   `tr es mi traducción` Autodetection enabled and default translation to English.  
   `tr :es my translation` Autodetection enabled and specify translation to Spanish.  
+
+3. Unicode Support
+  `tr hi:en नमस्ते` - Translate Hindi to English
+  `tr :mr hello` - Translate to Marathi
+
                        
 This plugin is a modified port of [Wox.Plugin.GoogleTranslate](https://github.com/laercioskt/Wox.Plugin.GoogleTranslate) created by [laercioskt](https://github.com/laercioskt).
