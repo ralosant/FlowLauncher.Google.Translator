@@ -4,4 +4,4 @@ Settings:
       name: to_lang
       label: "Default translation language:"
       defaultValue: "en"
-      description: Lenguage to display translations
+      description: Language code for translations (e.g. en, it, es, fr, de)
