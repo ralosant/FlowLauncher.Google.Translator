@@ -41,33 +41,51 @@ def is_valid_lang_spec(spec):
     return is_lang_code(src) and is_lang_code(dst)
 
 
+ENDPOINTS = [
+    ("https://translate.googleapis.com/translate_a/single", "dict-chrome-ex"),
+    ("https://clients5.google.com/translate_a/single", "dict-chrome-ex"),
+    ("https://translate.googleapis.com/translate_a/single", "p"),
+]
+
+
 @lru_cache(maxsize=256)
 def translate(to_translate, to_language="en", from_language="auto"):
-    """Get translated query from Google Translate single API."""
-    params = urllib.parse.urlencode({
-        "client": "gtx",
-        "sl": from_language,
-        "tl": to_language,
-        "dt": "t",
-        "q": to_translate
-    })
-    url = f"https://translate.googleapis.com/translate_a/single?{params}"
+    """Get translated query from Google Translate API with fallback endpoints."""
     headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
     }
-    req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=5) as resp:
-        raw_data = resp.read().decode("utf-8")
-        data = json.loads(raw_data)
+    last_err = None
 
-    sentences = data[0] if data and len(data) > 0 and data[0] else []
-    translated_text = "".join(s[0] for s in sentences if s and s[0])
+    for base_url, client in ENDPOINTS:
+        params = urllib.parse.urlencode({
+            "client": client,
+            "sl": from_language,
+            "tl": to_language,
+            "dt": "t",
+            "q": to_translate
+        })
+        url = f"{base_url}?{params}"
+        req = urllib.request.Request(url, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=5) as resp:
+                raw_data = resp.read().decode("utf-8")
+                data = json.loads(raw_data)
 
-    detected_lang = from_language
-    if len(data) > 2 and data[2]:
-        detected_lang = data[2]
+            sentences = data[0] if data and len(data) > 0 and data[0] else []
+            translated_text = "".join(s[0] for s in sentences if s and s[0])
 
-    return html.unescape(translated_text), detected_lang
+            detected_lang = from_language
+            if len(data) > 2 and data[2]:
+                detected_lang = data[2]
+
+            return html.unescape(translated_text), detected_lang
+        except Exception as e:
+            last_err = e
+            continue
+
+    if last_err:
+        raise last_err
+    return "", from_language
 
 
 def copy2clip(txt):
@@ -152,6 +170,13 @@ class GoogTranslate(FlowLauncher):
                         "parameters": [translation]
                     }
                 })
+        except urllib.error.HTTPError as e:
+            results.append({
+                "Title": "Network Error",
+                "SubTitle": f"Google Translate HTTP Error {e.code}: {getattr(e, 'reason', e)}",
+                "IcoPath": "images/gt.png",
+                "ContextData": "ctxData"
+            })
         except urllib.error.URLError as e:
             results.append({
                 "Title": "Network Error",
